@@ -1,6 +1,6 @@
 package ex2;
 
-// Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
+// Original s ource code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
 // Modified by Fernando Porrino Serrano for academic purposes.
 
 import java.util.ArrayList;

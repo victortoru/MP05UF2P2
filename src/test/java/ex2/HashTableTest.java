@@ -53,6 +53,22 @@ class HashTableTest {
     }
 
     @Test
+    void put_no_buida_3a() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("2", "Element 2");
+        hashTable.put("3", "Element 3");
+        hashTable.put("34", "Element 34");
+        System.out.println(hashTable.getCollisionsForKey("3",5));
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[2] = [2, Element 2]\n" +
+                " bucket[3] = [3, Element 3] -> [34, Element 34]",hashTable.toString()
+        );
+    }
+
+    @Test
     void get() {
     }
 
