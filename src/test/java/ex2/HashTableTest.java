@@ -3,8 +3,6 @@ package ex2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HashTableTest {
 
     @Test
@@ -135,12 +133,62 @@ class HashTableTest {
     @Test
     void get_element_buit(){
         HashTable hashTable = new HashTable();
+        hashTable.get("1", "Element 1");
+        System.out.println(hashTable.getCollisionsForKey("1",3));
 
-        Assertions.assertEquals("Element 2",hashTable.get("2")
+        Assertions.assertEquals("null",hashTable.toString());
+    }
+
+    @Test
+    void get_element_buit1(){
+        HashTable hashTable = new HashTable();
+        hashTable.get("1", "Element 1");
+        hashTable.get("2", "Element 2");
+        hashTable.get("13", "Element 13");
+        System.out.println(hashTable.getCollisionsForKey("2",3));
+
+        Assertions.assertEquals("\n" +
+                " bucket [1] = [1, Element 1]\n" +
+                " bucket [2] = [2, Element 2] -> [13, Element 13]", hashTable.toString()
         );
     }
 
     @Test
-    void drop() {
+    void get_element_buit2(){
+        HashTable hashTable = new HashTable();
+        hashTable.get("1", "Element 1");
+        hashTable.get("2", "Element 2");
+        hashTable.get("13", "Element 13");
+        hashTable.get("24", "Element 24");
+        System.out.println(hashTable.getCollisionsForKey("2",3));
+
+        Assertions.assertEquals("\n" +
+                " bucket [1] = [1, Element 1]\n" +
+                " bucket [2] = [2, Element 2] -> [13, Element 13] -> [24, Element 24]", hashTable.toString()
+        );
+    }
+
+    @Test
+    void get_element_buit3(){
+        HashTable hashTable = new HashTable();
+        hashTable.get("1", "Element 1");
+        hashTable.get("2", "Element 2");
+        hashTable.get("13", "Element 13");
+        hashTable.get("24", "Element 24");
+        hashTable.get("35", "Element 35");
+        System.out.println(hashTable.getCollisionsForKey("2",4));
+
+        Assertions.assertEquals("\n" +
+                " bucket [1] = [1, Element 1]\n" +
+                " bucket [2] = [2, Element 2] -> [13, Element 13] -> [24, Element 24] -> [35, Element 35]", hashTable.toString()
+        );
+    }
+
+
+
+    @Test
+    void drop_no_colisiona() {
+        HashTable hashTable = new HashTable();
+        hashTable.toString("1", "Element 1");
     }
 }

@@ -53,9 +53,10 @@ public class HashTable {
     /**
      * Permet recuperar un element dins la taula.
      * @param key La clau de l'element a trobar.
+     * @param s
      * @return El propi element que es busca (null si no s'ha trobat).
      */
-    public String get(String key) {
+    public String get(String key, String s) {
         int hash = getHash(key);
         if(entries[hash] != null) {
             HashEntry temp = entries[hash];
@@ -228,7 +229,7 @@ public class HashTable {
         // Print the HashTable structure
         log("****   HashTable  ***");
         log(hashTable.toString());
-        log("\nValue for key(20) : " + hashTable.get("20") );
+        log("\nValue for key(20) : " + hashTable.get("20", "Element 1") );
     }
 
     private static void log(String msg) {
