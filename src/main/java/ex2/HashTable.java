@@ -33,16 +33,22 @@ public class HashTable {
 
         if(entries[hash] == null) {
             entries[hash] = hashEntry;
-        }
-        else {
+        } else {
             HashEntry temp = entries[hash];
-            while(temp.next != null)
+            while(temp.next != null && !temp.key.equals(key)) {
                 temp = temp.next;
+            }
 
-            temp.next = hashEntry;
-            hashEntry.prev = temp;
+            if(temp.key.equals(key)) {
+                temp.value = value;
+            } else {
+                temp.next = hashEntry;
+                hashEntry.prev = temp;
+            }
         }
+        ITEMS++;
     }
+
 
     /**
      * Permet recuperar un element dins la taula.
