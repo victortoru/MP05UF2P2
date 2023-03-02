@@ -126,7 +126,7 @@ class HashTableTest {
 
         Assertions.assertEquals("\n" +
                 " bucket[1] = [1, Element 1]\n" +
-                " bucket[2] = [2, Element 2] -> [24, Element 24] -> [35, Element reemplazado]", hashTable.toString()
+                " bucket[2] = [2, Element 2] -> [24, Element 24] -> [35, Element 35] -> [35, Element reemplazado]", hashTable.toString()
         );
     }
 
@@ -179,11 +179,85 @@ class HashTableTest {
         );
     }
 
-
-
-
     @Test
     void drop_no_colisiona() {
         HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("25", "Element 25");
+        hashTable.put("36", "Element 36");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14] -> [25, Element 25] -> [36, Element 36]", hashTable.toString()
+        );
+    }
+
+    @Test
+    void drop_si_colisiona1() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        hashTable.drop("14");
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3]", hashTable.toString()
+        );
+
+    }
+
+    @Test
+    void drop_si_colisiona2() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("25", "Element 25");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        hashTable.drop("25");
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14]", hashTable.toString()
+        );
+    }
+
+    @Test
+    void drop_si_colisiona3() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("25", "Element 25");
+        hashTable.put("36", "Element 36");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        hashTable.drop("36");
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14] -> [25, Element 25]", hashTable.toString()
+        );
+    }
+
+    @Test
+    void drop_no_existeix() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("36", "Element 36");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        hashTable.drop("25");
+
+        Assertions.assertNull(hashTable.get("25"));
     }
 }

@@ -72,11 +72,13 @@ public class HashTable {
         if(entries[hash] != null) {
 
             HashEntry temp = entries[hash];
-            while( !temp.key.equals(key))
+
+            while( !temp.key.equals(key) && temp!=null)
                 temp = temp.next;
 
+
             if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
-            else{
+                else{
                 if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
                 temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
             }
@@ -88,6 +90,7 @@ public class HashTable {
         // hashcode implementation.
         return key.hashCode() % SIZE;
     }
+
 
     private class HashEntry {
         String key;
