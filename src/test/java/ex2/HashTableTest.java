@@ -26,6 +26,7 @@ class HashTableTest {
 
         Assertions.assertEquals(16, hashTable.size());
         Assertions.assertEquals(1, hashTable.count());
+
     }
 
     @Test
@@ -38,6 +39,8 @@ class HashTableTest {
                 " bucket[1] = [1, Element 1]\n" +
                 " bucket[2] = [2, Element 2]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(2, hashTable.count());
     }
 
     @Test
@@ -50,6 +53,8 @@ class HashTableTest {
                 " bucket[1] = [1, Element 1]\n" +
                 " bucket[2] = [2, Element 2] -> [35, Element 35]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(3, hashTable.count());
     }
 
     @Test
@@ -68,6 +73,8 @@ class HashTableTest {
                 " bucket[2] = [2, Element 2]\n" +
                 " bucket[3] = [3, Element 3] -> [36, Element 36] -> [47, Element 47]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(5, hashTable.count());
     }
 
     @Test
@@ -79,9 +86,11 @@ class HashTableTest {
         System.out.println(hashTable.getCollisionsForKey("2", 4));
 
         Assertions.assertEquals("\n" +
-                " bucket[1] = [1, Element remplazado]\n" +
+                " bucket[1] = [1, Element 1] -> [1, Element remplazado]\n" +
                 " bucket[2] = [2, Element 2]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(3, hashTable.count());
     }
 
     @Test
@@ -95,8 +104,10 @@ class HashTableTest {
 
         Assertions.assertEquals("\n" +
                 " bucket[1] = [1, Element 1]\n" +
-                " bucket[2] = [2, Element reemplazado] -> [24, Element 24]", hashTable.toString()
+                " bucket[2] = [2, Element 2] -> [24, Element 24] -> [2, Element reemplazado]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -110,8 +121,10 @@ class HashTableTest {
 
         Assertions.assertEquals("\n" +
                 " bucket[1] = [1, Element 1]\n" +
-                " bucket[2] = [2, Element 2] -> [24, Element reemplazado]", hashTable.toString()
+                " bucket[2] = [2, Element 2] -> [24, Element 24] -> [24, Element reemplazado]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -128,6 +141,8 @@ class HashTableTest {
                 " bucket[1] = [1, Element 1]\n" +
                 " bucket[2] = [2, Element 2] -> [24, Element 24] -> [35, Element 35] -> [35, Element reemplazado]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(5, hashTable.count());
     }
 
 
@@ -189,10 +204,13 @@ class HashTableTest {
         hashTable.put("36", "Element 36");
         System.out.println(hashTable.getCollisionsForKey("3", 4));
 
+        hashTable.drop("1");
+
         Assertions.assertEquals("\n" +
-                " bucket[1] = [1, Element 1]\n" +
                 " bucket[3] = [3, Element 3] -> [14, Element 14] -> [25, Element 25] -> [36, Element 36]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -201,15 +219,18 @@ class HashTableTest {
         hashTable.put("1", "Element 1");
         hashTable.put("3", "Element 3");
         hashTable.put("14", "Element 14");
+        hashTable.put("25", "Element 25");
+        hashTable.put("36", "Element 36");
         System.out.println(hashTable.getCollisionsForKey("3", 4));
 
-        hashTable.drop("14");
+        hashTable.drop("3");
 
         Assertions.assertEquals("\n" +
                 " bucket[1] = [1, Element 1]\n" +
-                " bucket[3] = [3, Element 3]", hashTable.toString()
+                " bucket[3] = [14, Element 14] -> [25, Element 25] -> [36, Element 36]", hashTable.toString()
         );
-
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -227,6 +248,8 @@ class HashTableTest {
                 " bucket[1] = [1, Element 1]\n" +
                 " bucket[3] = [3, Element 3] -> [14, Element 14]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -245,6 +268,8 @@ class HashTableTest {
                 " bucket[1] = [1, Element 1]\n" +
                 " bucket[3] = [3, Element 3] -> [14, Element 14] -> [25, Element 25]", hashTable.toString()
         );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 
     @Test
@@ -256,8 +281,51 @@ class HashTableTest {
         hashTable.put("36", "Element 36");
         System.out.println(hashTable.getCollisionsForKey("3", 4));
 
-        hashTable.drop("25");
+        hashTable.drop("2");
 
-        Assertions.assertNull(hashTable.get("25"));
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14] -> [36, Element 36]", hashTable.toString()
+        );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
+    }
+
+    @Test
+    void drop_no_existeix_colisio() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("36", "Element 36");
+        System.out.println(hashTable.getCollisionsForKey("3", 4));
+
+        hashTable.drop("12");
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14] -> [36, Element 36]", hashTable.toString()
+        );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
+    }
+
+    @Test
+    void drop_no_existeix_colisio2() {
+        HashTable hashTable = new HashTable();
+        hashTable.put("1", "Element 1");
+        hashTable.put("3", "Element 3");
+        hashTable.put("14", "Element 14");
+        hashTable.put("36", "Element 36");
+        System.out.println(hashTable.getCollisionsForKey("3", 5));
+
+        hashTable.drop("47");
+
+        Assertions.assertEquals("\n" +
+                " bucket[1] = [1, Element 1]\n" +
+                " bucket[3] = [3, Element 3] -> [14, Element 14] -> [36, Element 36]", hashTable.toString()
+        );
+        Assertions.assertEquals(16, hashTable.size());
+        Assertions.assertEquals(4, hashTable.count());
     }
 }

@@ -42,7 +42,9 @@ public class HashTable {
             temp.next = hashEntry;
             hashEntry.prev = temp;
         }
+        ITEMS++;// Incrementa la variable items después de agregar el nuevo elemento
     }
+
 
     /**
      * Permet recuperar un element dins la taula.
@@ -69,21 +71,25 @@ public class HashTable {
      */
     public void drop(String key) {
         int hash = getHash(key);
-        if(entries[hash] != null) {
-
+        if (entries[hash] != null) {
             HashEntry temp = entries[hash];
-
-            while( !temp.key.equals(key) && temp!=null)
+            while (temp != null && !temp.key.equals(key)) {
                 temp = temp.next;
-
-
-            if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
-                else{
-                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
-                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+            }
+            if (temp != null) {
+                if (temp.prev == null) {
+                    entries[hash] = temp.next;
+                } else {
+                    temp.prev.next = temp.next;
+                    if (temp.next != null) {
+                        temp.next.prev = temp.prev;
+                    }
+                }
+                ITEMS--; // Resta 1 al contador de elementos
             }
         }
     }
+
 
     private int getHash(String key) {
         // piggy backing on java string
